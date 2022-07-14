@@ -3,9 +3,11 @@ function adicionarDespesa() {
   let valorDespesa = prompt("Qual o valor de sua despesa?");
   Number(valorDespesa);
 
-  if (valorDespesa.includes(",") == true) {
+  if (valorDespesa.indexOf(",") > 0) {
     alert("O padrão de símbolo decimal deve ser um ponto.");
-  } else if (isNaN(valorDespesa) == true) {
+  }
+
+  if (isNaN(valorDespesa) == true) {
     alert("Por favor, digite um número válido");
   }
 }
@@ -14,9 +16,10 @@ function adicionarReceita() {
   let valorReceita = prompt("Qual o valor de sua receita?");
   Number(valorReceita);
 
-  if (valorReceita.includes(",") == true) {
+  if (valorReceita.indexOf(",") > 0) {
     alert("O padrão de símbolo decimal deve ser um ponto.");
-  } else if (isNaN(valorReceita) == true) {
+  }
+  if (isNaN(valorReceita) == true) {
     alert("Por favor, digite um número válido");
   }
 }
