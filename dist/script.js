@@ -1,46 +1,24 @@
 const financas = {
-  saldo: 10,
-  transacoes: [
-    {
-      descricao: 'Salgado na faculdade',
-      categoria: 'Despesa',
-      valor: 5.5
-    },
-    {
-      descricao: 'Livro Clean Code',
-      categoria: 'Despesa',
-      valor: 50
-    },
-    {
-      descricao: 'Grana do estágio',
-      categoria: 'Receita',
-      valor: 80
-    },
-    {
-      descricao: 'Capinha pro celular',
-      categoria: 'Despesa',
-      valor: 15
-    },
-  ]
+  saldo: 0,
+  transacoes: []
 };
 
 function formatarValor(valor) {
   return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
 }
 
-function exibirFinancas(){
+function exibirFinancas() {
   console.log('saldo: ', formatarValor(financas.saldo));
   financas.transacoes.forEach((transacao, i) => {
     console.log('');
 
     console.log('Transação', i + 1, ':')
-    console.log('[',transacao.categoria,']', transacao.descricao);
+    console.log('[', transacao.categoria, ']', transacao.descricao);
     console.log('R$: ', transacao.valor);
   })
 }
-
-exibirFinancas()
-
+document.getElementById('botao-despesa').addEventListener('click', () => { adicionarDespesa() })
+document.getElementById('botao-receita').addEventListener('click', () => { adicionarReceita() })
 function adicionarDespesa() {
   let descricaoDespesa = prompt("Qual a descricao de sua despesa?");
   let valorDespesa = prompt("Qual o valor de sua despesa?");
@@ -54,16 +32,28 @@ function adicionarDespesa() {
     alert("Por favor, digite um número válido");
   }
 
-  const valor = Number(valorDespesa);
+  if (isNaN(valorDespesa) == false && valorDespesa.indexOf(",") < 0) {
+    const valor = Number(valorDespesa);
 
-  const despesa = {
-    descricao: descricaoDespesa,
-    valor: valor,
-    categoria: 'Despesa'
+    const despesa = {
+      descricao: descricaoDespesa,
+      valor: valor,
+      categoria: 'Despesa'
+    }
+
+    financas.transacoes.push(despesa)
+    financas.saldo = financas.saldo - valor
+    document.getElementById('saldo').textContent = formatarValor(financas.saldo)
+
+
+    document.getElementById("lista-transacoes-conteudo").innerHTML += [
+      '<tr>',
+      `<td class="coluna-descricao">${despesa.descricao}</td>`,
+      `<td class="coluna-categoria">${despesa.categoria}</td>`,
+      `<td class="coluna-valor">${formatarValor(despesa.valor)}</td>`,
+      '</tr>',
+    ].join("\n");
   }
-
-  financas.transacoes.push(despesa)
-  financas.saldo = financas.saldo - valor
 }
 function adicionarReceita() {
   let descricaoReceita = prompt("Qual a descricao de sua receita?");
@@ -77,14 +67,24 @@ function adicionarReceita() {
     alert("Por favor, digite um número válido");
   }
 
-  const valor = Number(valorReceita);
+  if (isNaN(valorReceita) == false && valorReceita.indexOf(",") < 0) {
+    const valor = Number(valorReceita);
+    const receita = {
+      descricao: descricaoReceita,
+      valor: valor,
+      categoria: 'Receita'
+    }
 
-  const receita = {
-    descricao: descricaoReceita,
-    valor: valor,
-    categoria: 'Receita'
+    financas.transacoes.push(receita);
+    financas.saldo = financas.saldo + valor;
+    document.getElementById('saldo').textContent = formatarValor(financas.saldo);
+
+    document.getElementById("lista-transacoes-conteudo").innerHTML += [
+      '<tr>',
+      `<td class="coluna-descricao">${receita.descricao}</td>`,
+      `<td class="coluna-categoria">${receita.categoria}</td>`,
+      `<td class="coluna-valor">${formatarValor(receita.valor)}</td>`,
+      '</tr>',
+    ].join("\n");
   }
-
-  financas.transacoes.push(receita)
-  financas.saldo = financas.saldo + valor
 }
