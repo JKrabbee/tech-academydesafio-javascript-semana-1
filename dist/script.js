@@ -1,24 +1,44 @@
 const financas = {
   saldo: 0,
-  transacoes: []
+  transacoes: [],
 };
 
 function formatarValor(valor) {
-  return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+  return valor.toLocaleString("pt-br", { style: "currency", currency: "BRL" });
 }
 
 function exibirFinancas() {
-  console.log('saldo: ', formatarValor(financas.saldo));
+  console.log("saldo: ", formatarValor(financas.saldo));
   financas.transacoes.forEach((transacao, i) => {
-    console.log('');
+    console.log("");
 
-    console.log('Transação', i + 1, ':')
-    console.log('[', transacao.categoria, ']', transacao.descricao);
-    console.log('R$: ', transacao.valor);
-  })
+    console.log("Transação", i + 1, ":");
+    console.log("[", transacao.categoria, "]", transacao.descricao);
+    console.log("R$: ", transacao.valor);
+  });
 }
-document.getElementById('botao-despesa').addEventListener('click', () => { adicionarDespesa() })
-document.getElementById('botao-receita').addEventListener('click', () => { adicionarReceita() })
+
+function adicionarTransacao() {
+  let tabela = "";
+
+  financas.transacoes.forEach((transacao) => {
+    let linha = `<tr>
+    <td class="coluna-descricao">${transacao.descricao}</td> 
+    <td class="coluna-categoria">${transacao.categoria}</td> 
+    <td class="coluna-valor">${formatarValor(transacao.valor)}</td>
+    </tr>`;
+    tabela += linha;
+  });
+  document.getElementById("lista-transacoes-conteudo").innerHTML = tabela;
+}
+
+function exibirSaldo() {
+  document.getElementById("saldo").textContent = formatarValor(financas.saldo);
+}
+
+document.getElementById("botao-despesa").addEventListener("click", () => {
+  adicionarDespesa();
+});
 function adicionarDespesa() {
   let descricaoDespesa = prompt("Qual a descricao de sua despesa?");
   let valorDespesa = prompt("Qual o valor de sua despesa?");
@@ -38,23 +58,23 @@ function adicionarDespesa() {
     const despesa = {
       descricao: descricaoDespesa,
       valor: valor,
-      categoria: 'Despesa'
-    }
+      categoria: "Despesa",
+    };
 
-    financas.transacoes.push(despesa)
-    financas.saldo = financas.saldo - valor
-    document.getElementById('saldo').textContent = formatarValor(financas.saldo)
+    financas.transacoes.push(despesa);
+    financas.saldo = financas.saldo - valor;
+    document.getElementById("saldo").textContent = formatarValor(
+      financas.saldo
+    );
 
-
-    document.getElementById("lista-transacoes-conteudo").innerHTML += [
-      '<tr>',
-      `<td class="coluna-descricao">${despesa.descricao}</td>`,
-      `<td class="coluna-categoria">${despesa.categoria}</td>`,
-      `<td class="coluna-valor">${formatarValor(despesa.valor)}</td>`,
-      '</tr>',
-    ].join("\n");
+    adicionarTransacao();
+    exibirSaldo();
   }
 }
+document.getElementById("botao-receita").addEventListener("click", () => {
+  adicionarReceita();
+});
+
 function adicionarReceita() {
   let descricaoReceita = prompt("Qual a descricao de sua receita?");
   let valorReceita = prompt("Qual o valor de sua receita?");
@@ -72,19 +92,13 @@ function adicionarReceita() {
     const receita = {
       descricao: descricaoReceita,
       valor: valor,
-      categoria: 'Receita'
-    }
+      categoria: "Receita",
+    };
 
     financas.transacoes.push(receita);
     financas.saldo = financas.saldo + valor;
-    document.getElementById('saldo').textContent = formatarValor(financas.saldo);
 
-    document.getElementById("lista-transacoes-conteudo").innerHTML += [
-      '<tr>',
-      `<td class="coluna-descricao">${receita.descricao}</td>`,
-      `<td class="coluna-categoria">${receita.categoria}</td>`,
-      `<td class="coluna-valor">${formatarValor(receita.valor)}</td>`,
-      '</tr>',
-    ].join("\n");
+    exibirSaldo();
+    adicionarTransacao();
   }
 }
