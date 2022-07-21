@@ -36,9 +36,7 @@ function exibirSaldo() {
   document.getElementById("saldo").textContent = formatarValor(financas.saldo);
 }
 
-document.getElementById("botao-despesa").addEventListener("click", () => {
-  adicionarDespesa();
-});
+document.getElementById("botao-despesa").addEventListener("click", adicionarDespesa);
 function adicionarDespesa() {
   let descricaoDespesa = prompt("Qual a descricao de sua despesa?");
   let valorDespesa = prompt("Qual o valor de sua despesa?");
@@ -71,9 +69,7 @@ function adicionarDespesa() {
     exibirSaldo();
   }
 }
-document.getElementById("botao-receita").addEventListener("click", () => {
-  adicionarReceita();
-});
+document.getElementById("botao-receita").addEventListener("click", adicionarReceita);
 
 function adicionarReceita() {
   let descricaoReceita = prompt("Qual a descricao de sua receita?");
