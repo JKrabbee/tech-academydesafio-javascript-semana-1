@@ -32,8 +32,8 @@ function adicionarTransacao() {
   document.getElementById("lista-transacoes-conteudo").innerHTML = tabela;
 }
 
-function exibirSaldo() {
-  document.getElementById("saldo").textContent = formatarValor(financas.saldo);
+function exibirSaldo(saldo) {
+  document.getElementById("saldo").textContent = formatarValor(saldo);
 }
 
 document.getElementById("botao-despesa").addEventListener("click", adicionarDespesa);
@@ -98,3 +98,13 @@ function adicionarReceita() {
     adicionarTransacao();
   }
 }
+
+async function getTransacoes (){
+  const url = ('https://run.mocky.io/v3/ba2007f7-04ea-465b-985e-b16c11e8061d')
+  const getFetch = await fetch(url)
+  const financas = await getFetch.json()
+
+  exibirSaldo(financas.saldo)
+}
+
+getTransacoes ()
